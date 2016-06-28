@@ -1,0 +1,31 @@
+{
+  "name": "chatwork memo",
+  "version": "0.0.1",
+  "manifest_version": 2,
+  "description": "SAY☆いっぱい 輝く 輝く 星になれ",
+  "icons": {
+    "16": "images/star.png",
+    "128": "images/star.png"
+  },
+  "content_scripts": [{
+    "matches": [
+      "https://www.chatwork.com/*",
+      "https://kcw.kddi.ne.jp/*"
+    ],
+    "js": [
+      "scripts/lib/jquery-2.2.2.min.js",
+      "scripts/favorite-memo.js",
+      "scripts/chatwork-util.js"
+    ]
+  }],
+  "background": {
+    "scripts": [
+      "scripts/background.js"
+    ]
+  },
+  "permissions": [],
+  "web_accessible_resources": [
+    "images/*.png",
+    "images/*.svg"
+  ]
+}
