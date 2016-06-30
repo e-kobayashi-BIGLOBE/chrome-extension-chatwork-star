@@ -2,10 +2,9 @@
 'use strict';
 
 var _toolIconCreater = require('./modules/tool-icon-creater');
-
 var replaceButton = (0, _toolIconCreater.create)('_favButton', 'Star!!', 'star.png');
 
-document.getElementById('_chatSendTool').appendChild(replaceButton);
+$('#_chatSendTool').append(replaceButton);
 
 $('#_favButton').click(function (e) {
     var val = $('#_chatText').val();
@@ -16,6 +15,7 @@ $('#_favButton').click(function (e) {
 			util.send(val);
 		});
 });
+
 
 },{"./modules/tool-icon-creater":2}],2:[function(require,module,exports){
 'use strict';
@@ -45,4 +45,52 @@ function create(id, label, imageFileName) {
     return iconWrapper;
 }
 
+
 },{}]},{},[1]);
+
+function waitChange(oldRid) {
+    rid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
+
+    if (oldRid == rid) {
+        id = setTimeout(waitChange, 1000, oldRid);
+
+    } else {
+        clearTimeout(id);
+
+        putButton();
+    }
+}
+
+function doOnAppear() {
+    messages = $('#_timeLine').find('.chatTimeLineMessage');
+
+    if (messages.size() == 0) {
+        id = setTimeout(doOnAppear, 1000);
+
+    } else {
+        clearTimeout(id);
+
+        putButton();
+        onGroupChange();
+    }
+}
+
+function putButton() {
+    $('._chatTimeLineMessageBox').find('.timeStamp').append("<input type='button' class='memo_button' value='☆' />");
+    $('.memo_button').click(function() {
+        body = $(this).closest('div').parent('div').find('pre').html();
+
+        util.changeMemoChat(function() {
+    			util.send(body);
+    		});
+    });
+}
+
+function onGroupChange() {
+    $('._roomLink').click(function() {
+        var currentRid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
+        waitChange(currentRid);
+    });
+}
+
+doOnAppear();

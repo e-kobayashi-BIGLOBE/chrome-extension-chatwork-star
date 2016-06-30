@@ -14,15 +14,10 @@
     ],
     "js": [
       "scripts/lib/jquery-2.2.2.min.js",
-      "scripts/favorite-memo.js",
-      "scripts/chatwork-util.js"
+      "scripts/chatwork-util.js",
+      "scripts/favorite-memo.js"
     ]
   }],
-  "background": {
-    "scripts": [
-      "scripts/background.js"
-    ]
-  },
   "permissions": [],
   "web_accessible_resources": [
     "images/*.png",
