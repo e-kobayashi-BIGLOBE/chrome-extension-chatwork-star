@@ -1,66 +1,3 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
-
-var _toolIconCreater = require('./modules/tool-icon-creater');
-var replaceButton = (0, _toolIconCreater.create)('_favButton', 'Star!!', 'star.png');
-
-$('#_chatSendTool').append(replaceButton);
-
-$('#_favButton').click(function (e) {
-    var val = $('#_chatText').val();
-
-    $('#_chatText').val('');
-
-    util.changeMemoChat(function() {
-			util.send(val);
-		});
-});
-
-
-},{"./modules/tool-icon-creater":2}],2:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.create = create;
-
-/**
- * ツールチップ表示されるアイコンを作成する
- * @param id 要素のID
- * @param label ツールチップで表示される説明
- * @param imageFileName アイコン画像のファイル名(imagesディレクトリ内に置く)
- */
-function create(id, label, imageFileName) {
-    var icon = document.createElement('img');
-    icon.src = chrome.extension.getURL('images/' + imageFileName);
-    var iconWrapper = document.createElement('li');
-    iconWrapper.id = id;
-    iconWrapper.setAttribute('class', '_showDescription');
-    iconWrapper.setAttribute('class', '_cwABAction linkstatus');
-    iconWrapper.setAttribute('style', 'display: inline-block; padding-top: 3px;');
-    iconWrapper.setAttribute('role', 'button');
-    iconWrapper.setAttribute('aria-label', label);
-    iconWrapper.appendChild(icon);
-    return iconWrapper;
-}
-
-
-},{}]},{},[1]);
-
-function waitChange(oldRid) {
-    rid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
-
-    if (oldRid == rid) {
-        id = setTimeout(waitChange, 1000, oldRid);
-
-    } else {
-        clearTimeout(id);
-
-        putButton();
-    }
-}
-
 function doOnAppear() {
     messages = $('#_timeLine').find('.chatTimeLineMessage');
 
@@ -76,21 +13,76 @@ function doOnAppear() {
 }
 
 function putButton() {
-    $('._chatTimeLineMessageBox').find('.timeStamp').append("<input type='button' class='memo_button' value='☆' />");
+    $('._chatTimeLineMessageBox').find('.timeStamp').append(replaceButton);
     $('.memo_button').click(function() {
         body = $(this).closest('div').parent('div').find('pre').html();
-
-        util.changeMemoChat(function() {
-    			util.send(body);
-    		});
+        console.log(body);
+        sendChat();
     });
 }
 
+function sendChat() {
+  // 現在選択されているルームIDを取得する
+  // var romid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
+  var romid = $('#_roomListItems').find('li._roomSelected').data('rid');
+  console.log(romid);
+
+  if (romid != memoroomid) {
+  // メモするルームへ移動する
+  // var memoroom = $('#_roomListItems').find('li[aria-label="メモする"]');
+  var memoroom = $('#_roomListItems').find('li[data-rid="' + memoroomid + '"]');
+  console.log('メモに移動してpost');
+  memoroom.click();
+
+  // チャットを投稿する
+  // $('#_chatText').val(body);
+  // $('#_sendButton').trigger('click');
+
+  // 元のルームへ移動する
+    var memoroom = $('#_roomListItems').find('li[data-rid="'+ romid + '"]');
+    console.log('帰る');
+    // memoroom.trigger('click');
+  }
+}
+
+// ルーム変更
 function onGroupChange() {
     $('._roomLink').click(function() {
         var currentRid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
         waitChange(currentRid);
     });
 }
+
+// 変更したルームの表示が完了したら☆を置く
+function waitChange(oldRid) {
+    rid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
+
+    if (oldRid == rid) {
+        id = setTimeout(waitChange, 1000, oldRid);
+        console.log('待ち');
+
+    } else {
+        clearTimeout(id);
+
+        putButton();
+        console.log('ボタン置いた');
+    }
+}
+
+function create(label, imageFileName) {
+    var icon = document.createElement('img');
+    icon.src = chrome.extension.getURL('images/' + imageFileName);
+    var iconWrapper = document.createElement('li');
+    iconWrapper.setAttribute('class', 'memo_button');
+    iconWrapper.setAttribute('style', 'display: inline-block; padding-left: 2px;');
+    iconWrapper.setAttribute('role', 'button');
+    iconWrapper.setAttribute('aria-label', label);
+    iconWrapper.appendChild(icon);
+    return iconWrapper;
+}
+
+var memoroomid = "50517954"
+
+var replaceButton = create('Star!!', 'star.png');
 
 doOnAppear();
