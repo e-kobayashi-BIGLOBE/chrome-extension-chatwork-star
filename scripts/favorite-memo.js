@@ -24,36 +24,41 @@ function putButton() {
 function sendChat() {
   // 現在選択されているルームIDを取得する
   // var romid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
-  var romid = $('#_roomListItems').find('li._roomSelected').data('rid');
-  console.log(romid);
+  var nowromid = $('#_roomListItems').find('li._roomSelected').data('rid');
+  console.log(nowromid);
 
-  if (romid != memoroomid) {
-  // メモするルームへ移動する
-  // var memoroom = $('#_roomListItems').find('li[aria-label="メモする"]');
-  var memoroom = $('#_roomListItems').find('li[data-rid="' + memoroomid + '"]');
-  console.log('メモに移動してpost');
-  memoroom.click();
+  // メモするルームObject
+  // var memoroom = $('#_roomListItems').find('li[data-rid="' + memoroomid + '"]');
+  var memoroom = $('#_roomListItems').find('li[aria-label="' + memoroomname + '"]');
 
-  // チャットを投稿する
-  // $('#_chatText').val(body);
-  // $('#_sendButton').trigger('click');
+  // if (romid != memoroomid) {
+  if ($('#_roomListItems').find('li._roomSelected').data('rid') != memoroom.data('rid')) {
+      console.log('メモに移動する');
+      memoroom.click();
 
-  // 元のルームへ移動する
-    var memoroom = $('#_roomListItems').find('li[data-rid="'+ romid + '"]');
-    console.log('帰る');
-    // memoroom.trigger('click');
-  }
+      // チャットを投稿する
+      $('#_chatText').val(body);
+      $('#_sendButton').trigger('click');
+
+      // 元のルームへ移動する
+      var memoroom = $('#_roomListItems').find('li[data-rid="'+ nowromid + '"]');
+      console.log('帰る');
+      // romid.click();
+    }
+
+  console.log('おわり');
 }
 
 // ルーム変更
 function onGroupChange() {
     $('._roomLink').click(function() {
-        var currentRid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
-        waitChange(currentRid);
+      console.log('ルーム変更');
+      var currentRid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
+      waitChange(currentRid);
     });
 }
 
-// 変更したルームの表示が完了したら☆を置く
+// 変更先ルームの表示が完了したら☆を置く
 function waitChange(oldRid) {
     rid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
 
@@ -81,7 +86,8 @@ function create(label, imageFileName) {
     return iconWrapper;
 }
 
-var memoroomid = "50517954"
+var memoroomid = "41825160"
+var memoroomname = "メモする"
 
 var replaceButton = create('Star!!', 'star.png');
 
