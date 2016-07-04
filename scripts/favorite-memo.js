@@ -16,7 +16,6 @@ function putButton() {
     $('._chatTimeLineMessageBox').find('.timeStamp').append(replaceButton);
     $('.memo_button').click(function() {
         body = $(this).closest('div').parent('div').find('pre').html();
-        console.log(body);
         sendChat();
     });
 }
@@ -25,7 +24,6 @@ function sendChat() {
   // 現在選択されているルームIDを取得する
   // var romid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
   var nowromid = $('#_roomListItems').find('li._roomSelected').data('rid');
-  console.log(nowromid);
 
   // メモするルームObject
   // var memoroom = $('#_roomListItems').find('li[data-rid="' + memoroomid + '"]');
@@ -33,7 +31,6 @@ function sendChat() {
 
   // if (romid != memoroomid) {
   if ($('#_roomListItems').find('li._roomSelected').data('rid') != memoroom.data('rid')) {
-      console.log('メモに移動する');
       memoroom.click();
 
       // チャットを投稿する
@@ -42,17 +39,13 @@ function sendChat() {
 
       // 元のルームへ移動する
       var memoroom = $('#_roomListItems').find('li[data-rid="'+ nowromid + '"]');
-      console.log('帰る');
       // romid.click();
     }
-
-  console.log('おわり');
 }
 
 // ルーム変更
 function onGroupChange() {
     $('._roomLink').click(function() {
-      console.log('ルーム変更');
       var currentRid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
       waitChange(currentRid);
     });
@@ -64,7 +57,6 @@ function waitChange(oldRid) {
 
     if (oldRid == rid) {
         id = setTimeout(waitChange, 1000, oldRid);
-        console.log('待ち');
 
     } else {
         clearTimeout(id);
@@ -86,8 +78,9 @@ function create(label, imageFileName) {
     return iconWrapper;
 }
 
-var memoroomid = "41825160"
-var memoroomname = "メモする"
+
+// var memoroomid = "41825160"
+var memoroomname = "マイチャット"
 
 var replaceButton = create('Star!!', 'star.png');
 
