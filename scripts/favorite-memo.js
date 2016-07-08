@@ -7,17 +7,28 @@ function doOnAppear() {
     } else {
         clearTimeout(id);
 
-        putButton();
+        if ($('.memo_button').size() == 0 ){
+          putButton();
+        }
         onGroupChange();
+        watchScroll();
     }
 }
 
 function putButton() {
-    $('._chatTimeLineMessageBox').find('.timeStamp').append(replaceButton);
-    $('.memo_button').click(function() {
-        body = $(this).closest('div').parent('div').find('pre').html();
-        sendChat();
-    });
+  $('._chatTimeLineMessageBox').find('.timeStamp').append(replaceButton);
+  $('.memo_button').click(function() {
+      body = $(this).closest('div').parent('div').find('pre').html();
+      sendChat();
+  });
+}
+
+function watchScroll() {
+  $('#_timeLine').scroll(function() {
+    if ($('.memo_button').size() == 0 ){
+      putButton();
+    }
+  });
 }
 
 function sendChat() {
@@ -61,8 +72,9 @@ function waitChange(oldRid) {
     } else {
         clearTimeout(id);
 
-        putButton();
-        console.log('ボタン置いた');
+        if ($('.memo_button').size() == 0 ){
+          putButton();
+        }
     }
 }
 
@@ -78,9 +90,8 @@ function create(label, imageFileName) {
     return iconWrapper;
 }
 
-
 // var memoroomid = "41825160"
-var memoroomname = "マイチャット"
+var memoroomname = "こうえん"
 
 var replaceButton = create('Star!!', 'star.png');
 
