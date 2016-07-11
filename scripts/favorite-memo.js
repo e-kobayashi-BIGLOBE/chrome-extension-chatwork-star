@@ -50,7 +50,7 @@ function sendChat() {
 
       // 元のルームへ移動する
       var memoroom = $('#_roomListItems').find('li[data-rid="'+ nowromid + '"]');
-      // romid.click();
+      nowromid.click();
     }
 }
 
@@ -90,8 +90,8 @@ function create(label, imageFileName) {
     return iconWrapper;
 }
 
-// var memoroomid = "41825160"
-var memoroomname = "こうえん"
+// var memoroomid = ""
+var memoroomname = "マイチャット"
 
 var replaceButton = create('Star!!', 'star.png');
 
