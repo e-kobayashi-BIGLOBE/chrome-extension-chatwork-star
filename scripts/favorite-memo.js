@@ -33,11 +33,9 @@ function watchScroll() {
 
 function sendChat() {
   // 現在選択されているルームIDを取得する
-  // var romid = $('#_timeLine').find('.chatTimeLineMessage').last().data('rid');
   var nowromid = $('#_roomListItems').find('li._roomSelected').data('rid');
 
   // メモするルームObject
-  // var memoroom = $('#_roomListItems').find('li[data-rid="' + memoroomid + '"]');
   var memoroom = $('#_roomListItems').find('li[aria-label="' + memoroomname + '"]');
 
   // if (romid != memoroomid) {
@@ -90,7 +88,7 @@ function create(label, imageFileName) {
     return iconWrapper;
 }
 
-// var memoroomid = ""
+// 
 var memoroomname = "マイチャット"
 
 var replaceButton = create('Star!!', 'star.png');
