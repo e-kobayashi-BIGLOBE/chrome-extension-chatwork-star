@@ -18,7 +18,9 @@ function doOnAppear() {
 function putButton() {
   $('._chatTimeLineMessageBox').find('.timeStamp').append(replaceButton);
   $('.memo_button').click(function() {
-      body = $(this).closest('div').parent('div').find('pre').html();
+      body = $(this).closest('div').parent('div').find('pre').html() + "https://kcw.kddi.ne.jp/#!rid" + $(this).closest('div').parent('div').parent('div').attr('data-rid') + "-" + $(this).closest('div').parent('div').parent('div').attr('data-mid');
+      body = body.replace(/<code class="chatCode">/g,"[code]")
+      body = body.replace(/<\/code>/g,"[/code]")
       sendChat();
   });
 }
@@ -88,7 +90,6 @@ function create(label, imageFileName) {
     return iconWrapper;
 }
 
-// 
 var memoroomname = "マイチャット"
 
 var replaceButton = create('Star!!', 'star.png');
