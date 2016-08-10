@@ -18,10 +18,24 @@ function doOnAppear() {
 function putButton() {
   $('._chatTimeLineMessageBox').find('.timeStamp').append(replaceButton);
   $('.memo_button').click(function() {
-      body = $(this).closest('div').parent('div').find('pre').html() + "https://kcw.kddi.ne.jp/#!rid" + $(this).closest('div').parent('div').parent('div').attr('data-rid') + "-" + $(this).closest('div').parent('div').parent('div').attr('data-mid');
-      body = body.replace(/<code class="chatCode">/g,"[code]")
-      body = body.replace(/<\/code>/g,"[/code]")
-      sendChat();
+    datarid = $(this).closest('div').parent('div').parent('div').attr('data-rid')
+    mid = $(this).closest('div').parent('div').parent('div').attr('data-mid')
+
+    // メッセージリンク
+    body = $(this).closest('div').parent('div').find('pre').html() + "https://kcw.kddi.ne.jp/#!rid" + datarid + "-" + mid;
+
+    // リプライとTo
+    body = body.replace(/<div class="chatTimeLineReply _replyMessage" data-rid="(\d*)".*\.[j|p][p|n]g">/g,"[返信 aid=$1 to=" + datarid + "-" + mid + "]")
+    body = body.replace(/<span class="chatTimeLineTo">.*data-aid="(\d*)".*\.[j|p][p|n]g">/g,"[To:$1]")
+
+    // 引用
+    body = body.replace(/<div class="dev_quote chatQuote">[\S\s]*[aid](\d+)[\S\s]*<div class="quoteText">([\S\s]*)<\/div><\/div>/g,"[引用 aid=$1 time=0]$2[/引用]")
+
+    // ブロック
+    body = body.replace(/<div class="chatInfo">([\S\s]*?)<\/div>/g,"[info]$1[/info]")
+    body = body.replace(/<code class="chatCode">/g,"[code]")
+    body = body.replace(/<\/code>/g,"[/code]")
+    sendChat();
   });
 }
 
@@ -49,8 +63,8 @@ function sendChat() {
       $('#_sendButton').trigger('click');
 
       // 元のルームへ移動する
-      var memoroom = $('#_roomListItems').find('li[data-rid="'+ nowromid + '"]');
-      nowromid.click();
+      // var memoroom = $('#_roomListItems').find('li[data-rid="'+ nowromid + '"]');
+      // nowromid.click();
     }
 }
 
@@ -90,7 +104,7 @@ function create(label, imageFileName) {
     return iconWrapper;
 }
 
-var memoroomname = "マイチャット"
+var memoroomname = "メモする"
 
 var replaceButton = create('Star!!', 'star.png');
 
